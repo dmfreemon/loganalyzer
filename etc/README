@@ -1,0 +1,6 @@
+
+Create a config.php file in this directory from the sample provided, then edit.
+
+  > cp ../src/include/config.sample.php config.php
+  > vim config.php
+
