@@ -219,19 +219,6 @@ function GetFormatedDate($evttimearray)
 
 	if ( is_array($evttimearray) )
 	{
-		if ( 
-				GetConfigSetting("ViewUseTodayYesterday", 0, CFGLEVEL_USER) == 1 
-				&&
-				( date('m', $evttimearray[EVTIME_TIMESTAMP]) == date('m') && date('Y', $evttimearray[EVTIME_TIMESTAMP]) == date('Y') )
-			)
-		{
-			if ( date('d', $evttimearray[EVTIME_TIMESTAMP]) == date('d') )
-				return "Today " . date("H:i:s", $evttimearray[EVTIME_TIMESTAMP] );
-			else if ( date('d', $evttimearray[EVTIME_TIMESTAMP] + 86400) == date('d') )
-				return "Yesterday " . date("H:i:s", $evttimearray[EVTIME_TIMESTAMP] );
-		}
-		
-		// Copy to local variable
 		$nMyTimeStamp = $evttimearray[EVTIME_TIMESTAMP]; 
 	}
 	else
@@ -241,8 +228,37 @@ function GetFormatedDate($evttimearray)
 			return $evttimearray;
 	}
 
+        $holdTimeZone = date_default_timezone_get();
+
+        $displayTimeZone = GetConfigSetting("DisplayTimeZone", "UTC");
+
+        date_default_timezone_set($displayTimeZone);
+
+	$szDateFormatted = date("Y-m-d H:i:s T", $nMyTimeStamp );
+
+        if ( GetConfigSetting("ViewUseTodayYesterday", 0, CFGLEVEL_USER) == 1 )
+	{
+		$msgDate = date("Y-m-d", $nMyTimeStamp);
+		$todayDate = date("Y-m-d", time());
+		$yesterdayDate = date("Y-m-d", strtotime("-1 day", time()));
+
+		if ( $msgDate == $todayDate )
+		{
+			$szDateFormatted = "Today " . date("H:i:s T", $nMyTimeStamp );
+		}
+		else
+		{
+			if ( $msgDate == $yesterdayDate )
+			{
+				$szDateFormatted = "Yesterday " . date("H:i:s T", $nMyTimeStamp );
+			}
+		}
+	}
+
+        date_default_timezone_set($holdTimeZone);
+
 	// Reach return normal format!
-	return $szDateFormatted = date("Y-m-d H:i:s", $nMyTimeStamp );
+	return $szDateFormatted;
 }
 
 function GetDebugBgColor( $szDebugMode )

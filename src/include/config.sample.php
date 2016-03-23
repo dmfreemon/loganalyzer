@@ -106,6 +106,7 @@ $CFG['UseProxyServerForRemoteQueries'] = "";// If empty no proxy server will be 
 $CFG['HeaderDefaultEncoding'] = ENC_ISO_8859_1;	// Set default character encoding
 $CFG['DefaultFont'] = "Arial";				// Sets the default Font to be used in Loganalyzer
 $CFG['DefaultFontSize'] = "100";			// Sets the percentage font size, default is 100 (Percent). Can be changed up to 200 and down to 50 with good results.  
+$CFG['DisplayTimeZone'] = "UTC";                        // Sets the timezone to be used when displaying messages (e.g. "America/Chicago")
 // ---
 
 // --- Custom HTML Code 
